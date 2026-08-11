@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuenta regresiva a las 11:00</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+    }
+    .contenedor {
+        text-align: center;
+        width: 100%;
+        padding: 25px;
+    }
+    h1 {
+        font-size: clamp(24px, 6vw, 42px);
+        margin: 0 0 30px;
+    }
+    #reloj {
+        font-size: clamp(55px, 16vw, 130px);
+        font-weight: bold;
+        letter-spacing: 3px;
+        font-variant-numeric: tabular-nums;
+    }
+    #hora {
+        margin-top: 25px;
+        font-size: clamp(20px, 5vw, 30px);
+        opacity: .8;
+    }
+</style>
+</head>
+<body>
+<div class="contenedor">
+    <h1>Tiempo para habilitación inscripción FNS 50</h1>
+    <div id="reloj">00:00:00</div>
+    <div id="hora"></div>
+</div>
+
+<script>
+function actualizar() {
+    const ahora = new Date();
+    let objetivo = new Date(ahora);
+    objetivo.setHours(11, 0, 0, 0);
+
+    // Si ya pasaron las 11:00, apunta a las 11:00 del día siguiente.
+    if (ahora >= objetivo) {
+        objetivo.setDate(objetivo.getDate() + 1);
+    }
+
+    const diferencia = objetivo - ahora;
+    const horas = Math.floor(diferencia / 3600000);
+    const minutos = Math.floor((diferencia % 3600000) / 60000);
+    const segundos = Math.floor((diferencia % 60000) / 1000);
+
+    document.getElementById("reloj").textContent =
+        String(horas).padStart(2, "0") + ":" +
+        String(minutos).padStart(2, "0") + ":" +
+        String(segundos).padStart(2, "0");
+
+    document.getElementById("hora").textContent =
+        "Hora actual: " + ahora.toLocaleTimeString("es-AR");
+}
+
+actualizar();
+setInterval(actualizar, 1000);
+</script>
+</body>
+</html>
